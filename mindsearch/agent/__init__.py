@@ -17,7 +17,7 @@ from mindsearch.agent.mindsearch_prompt import (
 LLM = {}
 
 
-def init_agent(lang='cn', model_format='internlm_server',search_engine='DuckDuckGoSearch'):
+def init_agent(lang='cn', model_format='internlm_silicon',search_engine='BingSearch'):
     llm = LLM.get(model_format, None)
     if llm is None:
         llm_cfg = getattr(llm_factory, model_format)
@@ -46,7 +46,7 @@ def init_agent(lang='cn', model_format='internlm_server',search_engine='DuckDuck
                 BingBrowser(searcher_type=search_engine,
                             topk=6,
                             api_key=os.environ.get('BING_API_KEY',
-                                                   'YOUR BING API'))),
+                                                   '9aa85cba01ad441dbc53dc48df75a01b'))),
             protocol=MindSearchProtocol(
                 meta_prompt=datetime.now().strftime(
                     'The current date is %Y-%m-%d.'),

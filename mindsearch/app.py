@@ -20,11 +20,11 @@ def parse_arguments():
     parser = argparse.ArgumentParser(description='MindSearch API')
     parser.add_argument('--lang', default='cn', type=str, help='Language')
     parser.add_argument('--model_format',
-                        default='internlm_server',
+                        default='internlm_silicon',
                         type=str,
                         help='Model format')
     parser.add_argument('--search_engine',
-                       default='DuckDuckGoSearch',
+                       default='BingSearch',
                        type=str,
                        help='Search engine')
     return parser.parse_args()

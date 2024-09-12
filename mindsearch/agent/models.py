@@ -61,7 +61,7 @@ qwen = dict(type=GPTAPI,
 
 internlm_silicon = dict(type=GPTAPI,
                         model_type='internlm/internlm2_5-7b-chat',
-                        key=os.environ.get('SILICON_API_KEY', 'YOUR SILICON API KEY'),
+                        key=os.environ.get('SILICON_API_KEY', 'sk-mewvshbprofffrtqmffmrfsogvhlszxkpxsrodxnpcfibfvk'),
                         openai_api_base='https://api.siliconflow.cn/v1/chat/completions',
                         meta_template=[
                             dict(role='system', api_role='system'),
