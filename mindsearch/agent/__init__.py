@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 
 from lagent.actions import ActionExecutor, BingBrowser
+from mindsearch.agent.Tavily_Search import TavilySearch
 
 import mindsearch.agent.models as llm_factory
 from mindsearch.agent.mindsearch_agent import (MindSearchAgent,
@@ -17,7 +18,8 @@ from mindsearch.agent.mindsearch_prompt import (
 LLM = {}
 
 
-def init_agent(lang='cn', model_format='internlm_silicon',search_engine='BingSearch'):
+# def init_agent(lang='cn', model_format='internlm_silicon',search_engine='BingSearch'):
+def init_agent(lang='cn',model_format='internlm_silicon',search_engine='BingSearch'):
     llm = LLM.get(model_format, None)
     if llm is None:
         llm_cfg = getattr(llm_factory, model_format)
@@ -42,11 +44,17 @@ def init_agent(lang='cn', model_format='internlm_silicon',search_engine='BingSea
                                     if lang == 'cn' else FINAL_RESPONSE_EN),
         searcher_cfg=dict(
             llm=llm,
+            # plugin_executor=ActionExecutor(
+            #     BingBrowser(searcher_type=search_engine,
+            #                 topk=6,
+            #                 api_key=os.environ.get('BING_API_KEY',
+            #                                        '9aa85cba01ad441dbc53dc48df75a01b'))),
             plugin_executor=ActionExecutor(
-                BingBrowser(searcher_type=search_engine,
-                            topk=6,
-                            api_key=os.environ.get('BING_API_KEY',
-                                                   '9aa85cba01ad441dbc53dc48df75a01b'))),
+                TavilySearch(
+                    api_key=os.environ.get('TAVILY_API_KEY',
+                                           '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')
+                )
+            ),
             protocol=MindSearchProtocol(
                 meta_prompt=datetime.now().strftime(
                     'The current date is %Y-%m-%d.'),

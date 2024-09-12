@@ -199,6 +199,7 @@ class MindSearchAgent(BaseAgent):
         elif isinstance(message, dict):
             message = [message]
         as_dict = kwargs.pop('as_dict', False)
+        
         return_early = kwargs.pop('return_early', False)
         self.local_dict.clear()
         self.ptr = 0
