@@ -19,7 +19,7 @@ LLM = {}
 
 
 # def init_agent(lang='cn', model_format='internlm_silicon',search_engine='BingSearch'):
-def init_agent(lang='cn',model_format='internlm_silicon',search_engine='BingSearch'):
+def init_agent(lang='cn',model_format='internlm_silicon',search_engine='TavilySearch'):
     llm = LLM.get(model_format, None)
     if llm is None:
         llm_cfg = getattr(llm_factory, model_format)
@@ -48,12 +48,13 @@ def init_agent(lang='cn',model_format='internlm_silicon',search_engine='BingSear
             #     BingBrowser(searcher_type=search_engine,
             #                 topk=6,
             #                 api_key=os.environ.get('BING_API_KEY',
-            #                                        '9aa85cba01ad441dbc53dc48df75a01b'))),
+            #                                        'Your Bing API Key'))),
             plugin_executor=ActionExecutor(
-                TavilySearch(
-                    api_key=os.environ.get('TAVILY_API_KEY',
-                                           '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')
-                )
+                actions=[
+                    TavilySearch(
+                        api_key=os.environ.get('TAVILY_API_KEY', 'YOUR TAVIL_API_KEY'),
+                    )
+                ]
             ),
             protocol=MindSearchProtocol(
                 meta_prompt=datetime.now().strftime(
