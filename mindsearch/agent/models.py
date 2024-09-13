@@ -1,7 +1,10 @@
 import os
+from dotenv import load_dotenv
 
 from lagent.llms import (GPTAPI, INTERNLM2_META, HFTransformerCasualLM,
                          LMDeployClient, LMDeployServer)
+
+load_dotenv()
 
 internlm_server = dict(type=LMDeployServer,
                        path='internlm/internlm2_5-7b-chat',
@@ -36,7 +39,7 @@ internlm_hf = dict(type=HFTransformerCasualLM,
                    stop_words=['<|im_end|>'])
 # openai_api_base needs to fill in the complete chat api address, such as: https://api.openai.com/v1/chat/completions
 gpt4 = dict(type=GPTAPI,
-            model_type='gpt-4-turbo',
+            model_type=os.environ.get('OPENAI_MODEL', 'gpt-4o'),
             key=os.environ.get('OPENAI_API_KEY', 'YOUR OPENAI API KEY'),
             openai_api_base=os.environ.get('OPENAI_API_BASE', 'https://api.openai.com/v1/chat/completions'),
             )
