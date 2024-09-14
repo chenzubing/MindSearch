@@ -1,82 +1,57 @@
-<div id="top"></div>
+# MindSearch with Tavily
 
-<div align="center">
+English |[简体中文](README_zh-CN.md) 
 
-<img src="assets/logo.svg" style="width: 50%; height: auto;">
+## ✨ MindSearch with Tavily: A Powerful Deep AI Searcher
 
-[🌐 Project Page](https://mindsearch.netlify.app/) | [📃 Paper](https://arxiv.org/abs/2407.20183) | [🤗 Hugging Face Space](https://huggingface.co/spaces/internlm/MindSearchReact)| [💻 ModelScope](https://www.modelscope.cn/studios/Shanghai_AI_Laboratory/MindSearch)
+- MindSearch is an open-source AI search engine framework that can use open-source LLMs ([InternLM2.5 series models](https://huggingface.co/internlm/internlm2_5-7b-chat)), specially optimized to provide excellent performance within the MindSearch framework.
+- It can use search engine APIs such as DuckDuckGo, Bing, Brave, and Google.
+- This project adds the TavilySearch engine, allowing the use of the Tavily API for searches.
+- Tavily has a high reputation in academia and can provide more accurate search results.
 
-English | [简体中文](README_zh-CN.md)
+## ⚽️ Build Your Own MindSearch with Tavily
 
-<https://github.com/user-attachments/assets/44ffe4b9-be26-4b93-a77b-02fed16e33fe>
+### 🐞 Local Debugging of Tavily API
 
-</div>
-</p>
-
-## ✨ MindSearch: Mimicking Human Minds Elicits Deep AI Searcher
-
-## ⚽️ Build Your Own MindSearch
-
-### Step1: Dependencies Installation
+- First, register a new account at https://app.tavily.com/sign-in and set up a free Tavily API Key.
+- Enter the mindsearch/agent folder, open the test_tavily.py file, insert your Tavily API Key, and run the following command to test if the Tavily API is working correctly:
 
 ```bash
-git clone https://github.com/InternLM/MindSearch
+python test_tavily.py
+```
+
+### 🐞 Get SiliconFlow API Key
+
+- With SiliconFlow providing free InternLM2.5-7B-Chat services, you can use the API to get services, reducing the deployment MindSearch threshold.
+- To use SiliconFlow's API Key, first open https://account.siliconflow.cn/login to register a SiliconFlow account (if you have already registered, log in directly).
+- After completing registration, open https://cloud.siliconflow.cn/account/ak to prepare the API Key. First, create a new API key, then click the key to copy it for future use.
+- After completing registration, open https://cloud.siliconflow.cn/account/ak to prepare the API Key. First, create a new API key, then click the key to copy it for future use.
+
+### Step 1: Install Dependencies
+
+```bash
+git clone https://githubfast.com/chenzubing/MindSearch.git
 cd MindSearch
 pip install -r requirements.txt
 ```
 
-### Step2: Setup Environment Variables
+### Step 2: Start MindSearch API
 
-Before setting up the API, you need to configure environment variables. Rename the `.env.example` file to `.env` and fill in the required values.
-
-```bash
-mv .env.example .env
-# Open .env and add your keys and model configurations
-```
-
-### Step3: Setup MindSearch API
-
-Setup FastAPI Server.
+Start the FastAPI server:
 
 ```bash
-python -m mindsearch.app --lang en --model_format internlm_server --search_engine DuckDuckGoSearch
+python -m mindsearch.app --lang en --model_format internlm_silicon --search_engine TavilySearch
 ```
 
-- `--lang`: language of the model, `en` for English and `cn` for Chinese.
-- `--model_format`: format of the model.
-  - `internlm_server` for InternLM2.5-7b-chat with local server. (InternLM2.5-7b-chat has been better optimized for Chinese.)
-  - `gpt4` for GPT4.
-    if you want to use other models, please modify [models](./mindsearch/agent/models.py)
-- `--search_engine`: Search engine.
-  - `DuckDuckGoSearch` for search engine for DuckDuckGo.
-  - `BingSearch` for Bing search engine.
-  - `BraveSearch` for Brave search web api engine.
-  - `GoogleSearch` for Google Serper web search api engine.
-  
-  Please set your Web Search engine API key as the `WEB_SEARCH_API_KEY` environment variable unless you are using `DuckDuckGo`.
+- `--lang`: The language of the model, `en` for English.
+- `--model_format`: The format of the model.
+- `internlm_silicon` for the InternLM2.5-7B-Chat silicon server.
+- `--search_engine`: The search engine.
+- `TavilySearch` for the TavilySearch search engine.
 
-### Step4: Setup MindSearch Frontend
+### Step 3: Start MindSearch Frontend
 
-Providing following frontend interfaces,
-
-- React
-
-```bash
-# Install Node.js and npm
-# for Ubuntu
-sudo apt install nodejs npm
-
-# for windows
-# download from https://nodejs.org/zh-cn/download/prebuilt-installer
-
-# Install dependencies
-
-cd frontend/React
-npm install
-npm start
-```
-
-Details can be found in [React](./frontend/React/README.md)
+Several frontend interfaces are provided:
 
 - Gradio
 
@@ -84,54 +59,20 @@ Details can be found in [React](./frontend/React/README.md)
 python frontend/mindsearch_gradio.py
 ```
 
-- Streamlit
+- Streamlit (recommended for more stable results)
 
 ```bash
 streamlit run frontend/mindsearch_streamlit.py
 ```
 
-## 🌐 Change Web Search API
-
-To use a different type of web search API, modify the `searcher_type` attribute in the `searcher_cfg` located in `mindsearch/agent/__init__.py`. Currently supported web search APIs include:
-
-- `GoogleSearch`
-- `DuckDuckGoSearch`
-- `BraveSearch`
-- `BingSearch`
-
-For example, to change to the Brave Search API, you would configure it as follows:
-
-```python
-BingBrowser(
-    searcher_type='BraveSearch',
-    topk=2,
-    api_key=os.environ.get('BRAVE_API_KEY', 'YOUR BRAVE API')
-)
-```
-
-## 🐞 Using the Backend Without Frontend
-
-For users who prefer to interact with the backend directly, use the `backend_example.py` script. This script demonstrates how to send a query to the backend and process the response.
-
-```bash
-python backend_example.py
-```
-
-Make sure you have set up the environment variables and the backend is running before executing the script.
-
-## 🐞 Debug Locally
-
-```bash
-python -m mindsearch.terminal
-```
 
 ## 📝 License
 
-This project is released under the [Apache 2.0 license](LICENSE).
+This project is released under the [Apache 2.0 License](LICENSE).
 
-## Citation
+## Academic Citation
 
-If you find this project useful in your research, please consider cite:
+If this project has been helpful for your research, please consider citing it as follows:
 
 ```
 @article{chen2024mindsearch,
@@ -141,11 +82,3 @@ If you find this project useful in your research, please consider cite:
   year={2024}
 }
 ```
-
-## Our Projects
-
-Explore our additional research on large language models, focusing on LLM agents.
-
-- [Lagent](https://github.com/InternLM/lagent): A lightweight framework for building LLM-based agents
-- [AgentFLAN](https://github.com/InternLM/Agent-FLAN): An innovative approach for constructing and training with high-quality agent datasets (ACL 2024 Findings)
-- [T-Eval](https://github.com/open-compass/T-Eval): A Fine-grained tool utilization evaluation benchmark (ACL 2024)

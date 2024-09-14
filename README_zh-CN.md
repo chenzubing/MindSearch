@@ -1,48 +1,39 @@
-<div id="top"></div>
+# MindSearch with Tavily
+简体中文 |[English](README.md) 
 
-<div align="center">
 
-<img src="assets/logo.svg" style="width: 50%; height: auto;">
 
-[🌐 Project Page](https://mindsearch.netlify.app/) | [📃 Paper](https://arxiv.org/abs/2407.20183) | [🤗 Hugging Face Space](https://huggingface.co/spaces/internlm/MindSearchReact)| [💻 ModelScope](https://www.modelscope.cn/studios/Shanghai_AI_Laboratory/MindSearch)
+## ✨ MindSearch with Tavily: a Powerful Deep AI Searcher
 
-[English](README.md) | 简体中文
+- MindSearch 是一个开源的 AI 搜索引擎框架，可以使用开源 LLM（[InternLM2.5 系列模型](https://huggingface.co/internlm/internlm2_5-7b-chat)），经过专门优化，能够在 MindSearch 框架中提供卓越的性能。
+- 可以使用DuckDuckGo、Bing、Brave和Google等搜索引擎API
+- 本项目在这里增加了TavilySearch搜索引擎，可以使用Tavily API来进行搜索
+- Tavily在学术界有很高的声誉，可以提供更加准确的搜索结果
 
-<https://github.com/user-attachments/assets/b4312e9c-5b40-43e5-8c69-929c373e4965>
 
-</div>
-</p>
+## ⚽️ 构建您自己的 MindSearch with Tavily
 
-## ✨ MindSearch: Mimicking Human Minds Elicits Deep AI Searcher
+### 🐞 本地调试Tavily Api
 
-MindSearch 是一个开源的 AI 搜索引擎框架，具有与 Perplexity.ai Pro 相同的性能。您可以轻松部署它来构建您自己的搜索引擎，可以使用闭源 LLM（如 GPT、Claude）或开源 LLM（[InternLM2.5 系列模型](https://huggingface.co/internlm/internlm2_5-7b-chat)经过专门优化，能够在 MindSearch 框架中提供卓越的性能；其他开源模型没做过具体测试）。其拥有以下特性：
+- 首先到 https://app.tavily.com/sign-in 注册新账号， 设置好免费的 Tavily Api Key,
+- 进入mindsearch/agent文件夹,打开test_tavily.py 文件，将Tavily Api Key 填入，运行以下命令测试Tavily Api是否正常
 
-- 🤔 **任何想知道的问题**：MindSearch 通过搜索解决你在生活中遇到的各种问题
-- 📚 **深度知识探索**：MindSearch 通过数百网页的浏览，提供更广泛、深层次的答案
-- 🔍 **透明的解决方案路径**：MindSearch 提供了思考路径、搜索关键词等完整的内容，提高回复的可信度和可用性。
-- 💻 **多种用户界面**：为用户提供各种接口，包括 React、Gradio、Streamlit 和本地调试。根据需要选择任意类型。
-- 🧠 **动态图构建过程**：MindSearch 将用户查询分解为图中的子问题节点，并根据 WebSearcher 的搜索结果逐步扩展图。
+```bash
+python test_tavily.py
+```
 
-<div align="center">
+### 🐞 获取硅基流动 API Key
 
-<img src="assets/teaser.gif">
+- 随着硅基流动提供了免费的 InternLM2.5-7B-Chat 服务，可以通过API的方式来获取服务，降低了部署MindSearch 门槛。
+- 要使用硅基流动的 API Key，首先打开 https://account.siliconflow.cn/login 来注册硅基流动的账号（如果注册过，则直接登录即可）。
 
-</div>
-
-## ⚡️ MindSearch VS 其他 AI 搜索引擎
-
-在深度、广度和生成响应的准确性三个方面，对 ChatGPT-Web、Perplexity.ai（Pro）和 MindSearch 的表现进行比较。评估结果基于 100 个由人类专家精心设计的现实问题，并由 5 位专家进行评分\*。
-
-<div align="center">
-<img src="assets/mindsearch_openset.png" width="90%">
-</div>
-* 所有实验均在 2024 年 7 月 7 日之前完成。
-
-## ⚽️ 构建您自己的 MindSearch
+- 在完成注册后，打开 https://cloud.siliconflow.cn/account/ak 来准备 API Key。首先创建新 API 密钥，然后点击密钥进行复制，以备后续使用。
 
 ### 步骤1: 依赖安装
 
 ```bash
+git clone https://githubfast.com/chenzubing/MindSearch.git
+cd MindSearch
 pip install -r requirements.txt
 ```
 
@@ -51,41 +42,19 @@ pip install -r requirements.txt
 启动 FastAPI 服务器
 
 ```bash
-python -m mindsearch.app --lang en --model_format internlm_server --search_engine DuckDuckGoSearch
+python -m mindsearch.app --lang en --model_format internlm_silicon --search_engine TavilySearch
 ```
 
-- `--lang`: 模型的语言，`en` 为英语，`cn` 为中文。
+- `--lang`: 模型的语言，`en` 为英语。
 - `--model_format`: 模型的格式。
-  - `internlm_server` 为 InternLM2.5-7b-chat 本地服务器。
-  - `gpt4` 为 GPT4。
-    如果您想使用其他模型，请修改 [models](./mindsearch/agent/models.py)
-- `--search_engine`: 搜索引擎。
-  - `DuckDuckGoSearch` 为 DuckDuckGo 搜索引擎。
-  - `BingSearch` 为 Bing 搜索引擎。
-  - `BraveSearch` 为 Brave 搜索引擎。
-  - `GoogleSearch` 为 Google Serper 搜索引擎。
-    
-  请将网页搜索引擎 API 密钥设置为 `WEB_SEARCH_API_KEY` 环境变量，如果使用的是 `DuckDuckGo`，则无需设置。
+  - `internlm_silicon` 为 InternLM2.5-7b-chat 本地服务器。
+  - `--search_engine`: 搜索引擎。
+  - `TavilySearch` 为 TavilySearch 搜索引擎。
+  
  
 ### 步骤3: 启动 MindSearch 前端
 
 提供以下几种前端界面：
-
-- React
-
-```bash
-# 安装 Node.js 和 npm
-# 对于 Ubuntu
-sudo apt install nodejs npm
-# 对于 Windows
-# 从 https://nodejs.org/zh-cn/download/prebuilt-installer 下载
-
-cd frontend/React
-npm install
-npm start
-```
-
-更多细节请参考 [React](./frontend/React/README.md)
 
 - Gradio
 
@@ -93,17 +62,13 @@ npm start
 python frontend/mindsearch_gradio.py
 ```
 
-- Streamlit
+- Streamlit 提供较稳定的结果，推荐使用
 
 ```bash
 streamlit run frontend/mindsearch_streamlit.py
 ```
 
-## 🐞 本地调试
 
-```bash
-python mindsearch/terminal.py
-```
 
 ## 📝 许可证
 
@@ -121,11 +86,3 @@ python mindsearch/terminal.py
   year={2024}
 }
 ```
-
-## 相关项目
-
-关注我们其他在大语言模型上的一些探索，主要为LLM智能体方向。
-
-- [Lagent](https://github.com/InternLM/lagent): 一个轻便简洁的大语言模型智能体框架
-- [AgentFLAN](https://github.com/InternLM/Agent-FLAN): 一套构建高质量智能体语料和训练模型的方法 (ACL 2024 Findings)
-- [T-Eval](https://github.com/open-compass/T-Eval): 一个细粒度评估LLM调用工具能力的评测及 (ACL 2024)
