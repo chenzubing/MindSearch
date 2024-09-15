@@ -52,7 +52,7 @@ def init_agent(lang='cn',model_format='internlm_silicon',search_engine='TavilySe
             plugin_executor=ActionExecutor(
                 actions=[
                     TavilySearch(
-                        api_key=os.environ.get('TAVILY_API_KEY', 'YOUR TAVIL_API_KEY'),
+                        api_key=os.environ.get('TAVILY_API_KEY', 'TAVILY_API_KEY'),
                     )
                 ]
             ),
