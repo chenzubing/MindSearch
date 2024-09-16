@@ -41,6 +41,7 @@ class TavilySearch(BaseAction):
     def run(self, query: str) -> ActionReturn:
         try:
             results = self.search(query)
+            self.logger.debug(f"Raw search results: {results}")
             if isinstance(results, dict) and 'error' in results:
                 error_return = ActionReturn(
                     result=[{'type': 'text', 'content': str(results['error'])}],
@@ -59,7 +60,7 @@ class TavilySearch(BaseAction):
             
             processed_results = self.process_results(results)
             success_return = ActionReturn(
-                result=[{'type': 'text', 'content': processed_results}],
+                result=[{'type': 'text', 'content': json.dumps(processed_results)}],
                 state=ActionStatusCode.SUCCESS
             )
             self.logger.debug(f"Returning success: {success_return}")
@@ -73,11 +74,15 @@ class TavilySearch(BaseAction):
             self.logger.debug(f"Returning exception: {exception_return}")
             return exception_return
 
-    def process_results(self, results: dict) -> str:
-        processed = []
-        for result in results.get('results', []):
-            processed.append(f"Title: {result['title']}\nURL: {result['url']}\nContent: {result['content']}\n")
-        return "\n".join(processed)
+    def process_results(self, results: dict) -> dict:
+        processed = {}
+        for idx, result in enumerate(results.get('results', [])):
+            processed[str(idx)] = {
+                'title': result['title'],
+                'url': result['url'],
+                'content': result['content']
+            }
+        return processed
 
     @classmethod
     def get_api_description(cls):
